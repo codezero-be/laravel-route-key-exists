@@ -40,6 +40,18 @@ class RouteKeyExists implements Rule
      * Create a new rule instance.
      *
      * @param string $model
+     *
+     * @return static
+     */
+    public static function model($model)
+    {
+        return new static($model);
+    }
+
+    /**
+     * Create a new rule instance.
+     *
+     * @param string $model
      */
     public function __construct($model)
     {

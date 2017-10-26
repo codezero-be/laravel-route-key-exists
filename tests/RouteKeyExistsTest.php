@@ -24,7 +24,7 @@ class RouteKeyExistsTest extends TestCase
     public function it_resolves_a_model_with_custom_route_key()
     {
         $this->createRoute(
-            new RouteKeyExists(Model::class)
+            RouteKeyExists::model(Model::class)
         );
 
         $this->validate('foo-9999')
@@ -42,7 +42,7 @@ class RouteKeyExistsTest extends TestCase
     public function it_replaces_the_route_key_in_the_request_with_the_original_route_key()
     {
         $this->createRoute(
-            (new RouteKeyExists(Model::class))->replace()
+            RouteKeyExists::model(Model::class)->replace()
         );
 
         $response = $this->validate("foo-{$this->model->id}")
@@ -57,7 +57,7 @@ class RouteKeyExistsTest extends TestCase
     public function it_adds_the_original_route_key_to_the_request()
     {
         $this->createRoute(
-            (new RouteKeyExists(Model::class))->add('database_key')
+            RouteKeyExists::model(Model::class)->add('database_key')
         );
 
         $response = $this->validate("foo-{$this->model->id}")

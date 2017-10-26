@@ -59,11 +59,11 @@ But what if you are sending a custom key in a POST request and you want to valid
 
 Let's say you have a model with an ID of `1`, but `getRouteKey()` returns the encoded value of `1234`.
 
-In your validation rules, new up `\CodeZero\RouteKeyExists\RouteKeyExists` and pass the model's class name to the constructor:
+In your validation rules, pass your model's class name to `\CodeZero\RouteKeyExists\RouteKeyExists`:
 
 ```php
 request()->validate([
-    'model_id' => new RouteKeyExists(Model::class),
+    'model_id' => RouteKeyExists::model(Model::class),
 ]);
 ```
 
@@ -73,7 +73,7 @@ Possibly, you will need the actual ID to work with when validation passes. Tack 
 
 ```php
 request()->validate([
-    'model_id' => (new RouteKeyExists(Model::class))->replace(),
+    'model_id' => RouteKeyExists::model(Model::class)->replace(),
 ]);
 
 $id = request('model_id');
@@ -83,7 +83,7 @@ Or maybe you want to keep the encoded ID in the request, but add the actual ID a
 
 ```php
 request()->validate([
-    'model_id' => (new RouteKeyExists(Model::class))->add('actual_id'),
+    'model_id' => RouteKeyExists::model(Model::class)->add('actual_id'),
 ]);
 
 $id = request('actual_id');
