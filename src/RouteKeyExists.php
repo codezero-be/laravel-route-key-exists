@@ -24,7 +24,7 @@ class RouteKeyExists implements Rule
      * Replace the route key in the request
      * with the actual database value?
      *
-     * @var bool
+     * @var string|bool
      */
     protected $replaceAttribute = false;
 
@@ -59,14 +59,17 @@ class RouteKeyExists implements Rule
     }
 
     /**
-     * Replace the route key in the request
-     * with the actual database value.
+     * Replace the route key in the request with the actual database value.
+     * If an attribute name is provided, the original request attribute
+     * name will be removed and replaced with the new one.
+     *
+     * @param string|null $attribute
      *
      * @return $this
      */
-    public function replace()
+    public function replace($attribute = null)
     {
-        $this->replaceAttribute = true;
+        $this->replaceAttribute = $attribute ?: true;
 
         return $this;
     }
@@ -134,6 +137,11 @@ class RouteKeyExists implements Rule
             $this->mergeRequest($this->attribute, $actualKey);
         }
 
+        if (is_string($this->replaceAttribute)) {
+            $this->mergeRequest($this->replaceAttribute, $actualKey);
+            $this->removeFromRequest($this->attribute);
+        }
+
         if ($this->addAttribute !== null) {
             $this->mergeRequest($this->addAttribute, $actualKey);
         }
@@ -152,5 +160,23 @@ class RouteKeyExists implements Rule
         request()->merge([
             $key => $value,
         ]);
+    }
+
+    /**
+     * Remove an attribute from the request.
+     *
+     * @param mixed $attribute
+     *
+     * @return void
+     */
+    protected function removeFromRequest($attribute)
+    {
+        $attributes = request()->all();
+
+        if (isset($attributes[$attribute])) {
+            unset($attributes[$attribute]);
+        }
+
+        request()->replace($attributes);
     }
 }

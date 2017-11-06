@@ -54,6 +54,29 @@ class RouteKeyExistsTest extends TestCase
     }
 
     /** @test */
+    public function it_replaces_the_route_key_in_the_request_with_the_original_route_key_and_changes_the_attribute_name()
+    {
+        $this->createRoute(
+            RouteKeyExists::model(Model::class)->replace('changed_key')
+        );
+
+        $response = $this->validate("foo-{$this->model->id}")
+            ->assertStatus(200);
+
+        $response->assertJsonMissing([
+            'key' => "foo-{$this->model->id}",
+        ]);
+
+        $response->assertJsonMissing([
+            'key' => $this->model->id,
+        ]);
+
+        $response->assertJsonFragment([
+            'changed_key' => $this->model->id,
+        ]);
+    }
+
+    /** @test */
     public function it_adds_the_original_route_key_to_the_request()
     {
         $this->createRoute(

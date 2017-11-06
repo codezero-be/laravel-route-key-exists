@@ -79,6 +79,17 @@ request()->validate([
 $id = request('model_id');
 ```
 
+If your form uses a different attribute name than your model or database, you can replace the ID and the attribute name in the process.
+
+```php
+request()->validate([
+    'model' => RouteKeyExists::model(Model::class)->replace('model_id'),
+]);
+
+$id = request('model_id'); // actual ID
+//$id = request('model'); // null
+```
+
 Or maybe you want to keep the encoded ID in the request, but add the actual ID as well. Just tack on `add()` and specify an attribute name:
 
 ```php
