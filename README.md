@@ -76,7 +76,7 @@ request()->validate([
     'model_id' => RouteKeyExists::model(Model::class)->replace(),
 ]);
 
-$id = request('model_id');
+$id = request('model_id'); // actual ID
 ```
 
 If your form uses a different attribute name than your model or database, you can replace the ID and the attribute name in the process.
@@ -97,10 +97,11 @@ request()->validate([
     'model_id' => RouteKeyExists::model(Model::class)->add('actual_id'),
 ]);
 
-$id = request('actual_id');
+$id = request('actual_id'); // actual ID
+$key = request('model_id'); // route key
 ```
 
-Beware that `actual_id` is not included on the `$attributes` array, since it is not being validated.
+Beware that attributes that are dynamically added to the request will not be included in the array that is returned from `request()->validate()`. You can access those via `request('attribute_name')`.
 
 ## Useful Packages
 
