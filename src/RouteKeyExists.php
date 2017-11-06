@@ -165,7 +165,7 @@ class RouteKeyExists implements Rule
     /**
      * Remove an attribute from the request.
      *
-     * @param mixed $attribute
+     * @param string $attribute
      *
      * @return void
      */
