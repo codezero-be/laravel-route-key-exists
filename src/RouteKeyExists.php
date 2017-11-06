@@ -32,9 +32,9 @@ class RouteKeyExists implements Rule
      * Attribute with the actual database value
      * to add to the request.
      *
-     * @var string
+     * @var string|bool
      */
-    protected $addAttribute = null;
+    protected $addAttribute = false;
 
     /**
      * Create a new rule instance.
@@ -142,7 +142,7 @@ class RouteKeyExists implements Rule
             $this->removeFromRequest($this->attribute);
         }
 
-        if ($this->addAttribute !== null) {
+        if (is_string($this->addAttribute)) {
             $this->mergeRequest($this->addAttribute, $actualKey);
         }
     }
